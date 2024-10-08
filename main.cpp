@@ -1,27 +1,49 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <Windows.h>
 
-int Recursive(int time, int money){
-	if(time <= 1){
-		return (100);
-	}
+typedef void (*PFunc)(int*);
 
-	money = money * 2 - 50;
+void DispResult(int* s) {
+	printf("%d秒待って実行されたよ\n", *s);
+}
 
-	return (money + Recursive(time - 1, money));
+void setTimeout(PFunc p, int second) {
+	Sleep(second * 1000);
+
+	p(&second);
 }
 
 int main() {
-	int time = 8;
-	int money = 100;
-	int salary = 1072;
-	int result;
-	int result2;
+	int dice = rand() % 6 + 1;
+	int isDice;
+	PFunc p;
+	p = DispResult;
 
-	result = salary * time;
-	result2 = Recursive(time, money);
+	printf("サイコロの目は奇数だと思うなら1、偶数だと思うなら2を押してください\n");
+	scanf_s("%d", &isDice);
 
-	printf("一般的な賃金体系で%d時間 = %d\n", time, result);
-	printf("再帰的な賃金体系で%d時間 = %d", time, result2);
+	setTimeout(p, 3);
+
+	if (dice % 2 == 0){
+		if (isDice == 1)
+		{
+			printf("不正解");
+		}
+		if (isDice == 2)
+		{
+			printf("正解");
+		}
+	} else if(dice % 2 == 1){
+		if (isDice == 1)
+		{
+			printf("正解");
+		}
+		if (isDice == 2)
+		{
+			printf("不正解");
+		}
+	}
 
 	return 0;
 }
