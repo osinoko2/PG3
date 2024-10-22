@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <Windows.h>
+#include <functional>
 
 typedef void (*PFunc)(int*);
 
-void Result(int* s) {
+void result(int* s) {
 	printf("%d秒待って実行されたよ\n", *s);
 }
 
@@ -14,14 +15,18 @@ void setTimeout(PFunc p, int second) {
 	p(&second);
 }
 
-int main() {
+int main(int argc, const char *argv[]) {
 	int dice = rand() % 6 + 1;
-	int isDiceThrow;
+	int isDiceThrow = 0;
 	PFunc p;
-	p = Result;
+	p = result;
 
-	printf("サイコロの目は奇数だと思うなら1、偶数だと思うなら2を押してください\n");
-	scanf_s("%d", &isDiceThrow);
+	std::function<void()> fx = [&isDiceThrow]() {
+		printf("サイコロの目は奇数だと思うなら1、偶数だと思うなら2を押してください\n");
+		scanf_s("%d", &isDiceThrow);
+	};
+
+	fx();
 
 	setTimeout(p, 3);
 
