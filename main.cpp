@@ -15,40 +15,62 @@ void setTimeout(PFunc p, int second) {
 	p(&second);
 }
 
-int main(int argc, const char *argv[]) {
-	int dice = rand() % 6 + 1;
-	int isDiceThrow = 0;
-	PFunc p;
-	p = result;
-
-	std::function<void()> fx = [&isDiceThrow]() {
-		printf("サイコロの目は奇数だと思うなら1、偶数だと思うなら2を押してください\n");
-		scanf_s("%d", &isDiceThrow);
+class Enemy
+{
+public:
+	// 状態遷移関数
+	void Approach();
+	void Shot();
+	void Separation();
+	void Update();
+private:
+	static void (Enemy::* sphaseTable[])();
+	enum Phase
+	{
+		approachPhase,
+		shotPhase,
+		separationPhase
 	};
 
-	fx();
+	Phase phase_ = Phase::approachPhase;
+};
 
-	setTimeout(p, 3);
+// フェーズの関数テーブル
+void (Enemy::* Enemy::sphaseTable[])() = {
+	&Enemy::Approach, // 接近
+	&Enemy::Shot, // 射撃
+	&Enemy::Separation // 離脱
+};
 
-	if (dice % 2 == 0){
-		if (isDiceThrow == 1)
-		{
-			printf("不正解");
-		}
-		if (isDiceThrow == 2)
-		{
-			printf("正解");
-		}
-	} else if(dice % 2 == 1){
-		if (isDiceThrow == 1)
-		{
-			printf("正解");
-		}
-		if (isDiceThrow == 2)
-		{
-			printf("不正解");
-		}
-	}
+void Enemy::Approach()
+{
+	printf("敵が近づいてきた!\n");
+
+	phase_ = Phase::shotPhase;
+}
+
+void Enemy::Shot()
+{
+	printf("敵が弾を発射した!\n");
+
+	phase_ = Phase::separationPhase;
+}
+
+void Enemy::Separation()
+{
+	printf("敵が離れていく...\n");
+}
+
+void Enemy::Update() {
+	(this->*sphaseTable[static_cast<size_t>(phase_)])();
+}
+
+Enemy enemy;
+
+int main(int argc, const char *argv[]) {
+	enemy.Update();
+	enemy.Update();
+	enemy.Update();
 
 	return 0;
 }
