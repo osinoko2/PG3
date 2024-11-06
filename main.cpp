@@ -111,22 +111,54 @@ void Calc<Type1, Type2>::Min(Type1 a, Type2 b) {
 	}
 }
 
-class DeathEater
+class IShape
 {
 public:
-	DeathEater();
-	virtual ~DeathEater();
-	virtual void Attack();
+	virtual void Size();
+	virtual void Draw();
 
-protected:
-	const char* name;
+private:
 };
 
-DeathEater::DeathEater()
+void IShape::Size()
 {
 }
 
-DeathEater::~DeathEater()
+void IShape::Draw()
+{
+}
+
+class Circle : public IShape
+{
+public:
+	void Size() override;
+	void Draw() override;
+
+private:
+};
+
+void Circle::Size()
+{
+}
+
+void Circle::Draw()
+{
+}
+
+class Rectangle : public IShape
+{
+public:
+	void Size() override;
+	void Draw() override;
+
+private:
+};
+
+void Rectangle::Size()
+{
+}
+
+void Rectangle::Draw()
 {
 }
 
