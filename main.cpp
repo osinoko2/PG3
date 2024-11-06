@@ -111,6 +111,25 @@ void Calc<Type1, Type2>::Min(Type1 a, Type2 b) {
 	}
 }
 
+class DeathEater
+{
+public:
+	DeathEater();
+	virtual ~DeathEater();
+	virtual void Attack();
+
+protected:
+	const char* name;
+};
+
+DeathEater::DeathEater()
+{
+}
+
+DeathEater::~DeathEater()
+{
+}
+
 Enemy enemy;
 
 int main(int argc, const char *argv[]) {
